@@ -1,0 +1,48 @@
+<%- include("partials/head.ejs") %>
+<% function addComas(num) {
+    let result ="";
+    let splitNum = num.toString().split(".");
+    let strNum = splitNum[0];
+    let count = 0;
+    for (let i = strNum.length-1; i > - 1; i--) {
+        if (count === 3) {
+            result += ",";
+            count = 0;
+        }
+        result += strNum[i];
+        count += 1;
+    }
+    result = result.split('').reverse().join('');
+    if (splitNum[1] === undefined) {
+        return result;
+    } else {
+        return result + "." + splitNum[1];
+    }
+} %>
+
+    <div class="page-title">Crypto Currency Prices</div>
+
+    <section class="main container">
+      <%- include("partials/search_form.ejs") %>
+      <div class="content">
+      <% if (locals.error) { %>
+        <div> <%= error %> </div>
+      <% } else { %>
+       
+        <% data.forEach(element => { %>
+          <div class="data">
+            <div class="price"><%=addComas(element.current_price) %> $</div>
+            <div><%=element.name%></div>
+            <div>
+              <img
+                src=<%=element.image%>
+              />
+            </div>
+          </div>
+        <div class="seperator"></div>
+      <% }); %>
+      <% } %>
+      </div>
+    </section>
+
+<%- include("partials/foot.ejs") %>
